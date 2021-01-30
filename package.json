@@ -6,7 +6,7 @@
     "name": "Jbseries"
   },
   "license": "MIT",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@coreui/coreui": "^3.4.0",
     "@coreui/icons": "^2.0.0-rc.0",
@@ -57,9 +57,5 @@
       "!src/serviceWorker.js",
       "!src/polyfill.js"
     ]
-  },
-  "engines": {
-    "node": ">=10",
-    "npm": ">=6"
   }
 }
