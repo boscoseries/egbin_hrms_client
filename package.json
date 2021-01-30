@@ -5,7 +5,6 @@
   "author": {
     "name": "Jbseries"
   },
-  "homepage": ".",
   "license": "MIT",
   "private": true,
   "dependencies": {
