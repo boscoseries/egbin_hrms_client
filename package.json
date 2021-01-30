@@ -7,6 +7,7 @@
   },
   "license": "MIT",
   "private": false,
+  "homepage": "https://yourusername.github.io/egbin_hrms_client",
   "dependencies": {
     "@coreui/coreui": "^3.4.0",
     "@coreui/icons": "^2.0.0-rc.0",
@@ -33,15 +34,19 @@
   },
   "devDependencies": {
     "auto-changelog": "~2.2.1",
+    "gh-pages": "^3.1.0",
     "react-scripts": "^4.0.1"
   },
   "scripts": {
-  "dev": "react-scripts start",
-  "start": "serve -s build",
-  "build": "react-scripts build",
-  "test": "react-scripts test --env=jsdom",
-  "eject": "react-scripts eject",
-  "heroku-postbuild": "npm run build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:cov": "npm test -- --coverage --watchAll=false",
+    "test:debug": "react-scripts --inspect-brk test --runInBand",
+    "eject": "react-scripts eject",
+    "changelog": "auto-changelog --starting-version 3.0.0 --commit-limit false --hide-credit"
   },
   "eslintConfig": {
     "extends": "react-app"
