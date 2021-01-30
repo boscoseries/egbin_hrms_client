@@ -36,11 +36,12 @@
     "react-scripts": "^4.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "serve": "yarn global add serve && serve -s build",
-    "build": "react-scripts build && yarn serve",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "dev": "react-scripts start",
+  "start": "serve -s build",
+  "build": "react-scripts build",
+  "test": "react-scripts test --env=jsdom",
+  "eject": "react-scripts eject",
+  "heroku-postbuild": "npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
