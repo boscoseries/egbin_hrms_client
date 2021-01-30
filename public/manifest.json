@@ -1,6 +1,6 @@
 {
-  "short_name": "CoreUI-React",
-  "name": "CoreUI-React sample",
+  "short_name": "Egbin Client",
+  "name": "Egbin Client",
   "icons": [
     {
       "src": "./assets/img/favicon.png",
