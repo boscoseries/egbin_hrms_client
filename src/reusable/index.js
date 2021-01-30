@@ -1,5 +1,4 @@
-import DocsLink from './DocsLink'
+import DocsLink from "./DocsLink";
+import LeaveRequestTable from "./LeaveRequestTable";
 
-export {
-  DocsLink
-}
+export { DocsLink, LeaveRequestTable };

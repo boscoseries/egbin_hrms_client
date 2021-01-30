@@ -1,11 +1,10 @@
 import React from "react";
-import AdminLeaveRequestDetails from "../../base/tables/LeaveRequestDetails";
+import { LeaveRequestTable } from "../../../reusable";
 
 const LeaveRequests = props => {
-  console.log("also got here");
   return (
     <div>
-      <AdminLeaveRequestDetails match={props.match} />
+      <LeaveRequestTable match={props.match} />
     </div>
   );
 };

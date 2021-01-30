@@ -15,7 +15,7 @@ import store from './store'
 React.icons = icons
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider>
     <App/>
   </Provider>,
   document.getElementById('root')

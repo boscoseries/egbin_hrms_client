@@ -1,5 +1,5 @@
 import React from "react";
-import LeaveRequestDetails from "../../base/tables/LeaveRequestDetails";
+import { LeaveRequestTable } from "../../../reusable";
 
 const EmployeeRequestDetails = props => {
   const data = [
@@ -27,7 +27,7 @@ const EmployeeRequestDetails = props => {
 
   return (
     <div>
-      <LeaveRequestDetails tableData={data} match={props.match} />
+      <LeaveRequestTable tableData={data} match={props.match} />
     </div>
   );
 };

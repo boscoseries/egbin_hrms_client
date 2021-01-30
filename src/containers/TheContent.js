@@ -15,7 +15,7 @@ const TheContent = () => {
   const history = useHistory();
   const auth = false;
 
-  if (auth == true) {
+  if (auth === true) {
     history.push("/login");
   } else {
     history.goForward();
