@@ -37,7 +37,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && serve -s build",
+    "serve": "yarn global add serve && serve -s build",
+    "build": "react-scripts build && yarn serve",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
