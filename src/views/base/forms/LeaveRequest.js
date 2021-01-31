@@ -1,7 +1,9 @@
 import React, { useState, useLayoutEffect } from "react";
 import { useDispatch } from "react-redux";
 import { createLeaveRequest } from "../../../redux/actions";
+import { fetchUsers } from "../../../redux/actions";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { useAlert } from "react-alert";
 import {
   CButton,
@@ -21,15 +23,18 @@ import {
 import CIcon from "@coreui/icons-react";
 
 const LeaveRequest = () => {
+  const history = useHistory();
   const alert = useAlert();
   const dispatch = useDispatch();
   const state = useSelector(state => state);
-  const userState = state.users.user;
+  const user = state.users.user;
+  const users = state.users.users.results;
   const [availableDays, setavailableDays] = useState("");
   const [formValues, setFormValues] = useState({});
 
   useLayoutEffect(() => {
-    setavailableDays(userState[formValues.leaveType]);
+    setavailableDays(user[formValues.leaveType]);
+    dispatch(fetchUsers());
   }, [formValues.leaveType]);
 
   const onInputChange = e => {
@@ -41,7 +46,11 @@ const LeaveRequest = () => {
     });
   };
 
-  const handleSubmit = () => {
+  // console.log(user);
+  console.log(formValues);
+  // console.log(users);
+
+  const handleSubmit = async () => {
     if (Object.keys(formValues).length < 6) {
       return alert.show("Please complete all fields");
     }
@@ -57,10 +66,11 @@ const LeaveRequest = () => {
       leave_end: new Date(formValues.leave_end),
       resumption_date: new Date(formValues.resumption_date)
     };
-    dispatch(createLeaveRequest(data));
+    const response = await dispatch(createLeaveRequest(data));
+    if (response.id) {
+      history.push("/employee/summary");
+    }
   };
-
-
 
   return (
     <>
@@ -88,8 +98,8 @@ const LeaveRequest = () => {
                 )}
                 <CFormGroup row>
                   <CCol sm="12" md="6">
-                    <CLabel htmlFor="leaveType">Leave Type</CLabel>
-                    <CSelect custom name="leaveType" id="leaveType" onChange={onInputChange}>
+                    <CLabel htmlFor="type">Leave Type</CLabel>
+                    <CSelect custom name="type" id="type" onChange={onInputChange}>
                       <option value="">Select Leave Type</option>
                       <option value="annual_leave">Annual Leave</option>
                       <option value="exam_leave">Examination Leave</option>
@@ -119,11 +129,14 @@ const LeaveRequest = () => {
                     <CInput type="date" id="resumption_date" name="resumption_date" placeholder="date" onChange={onInputChange} />
                   </CCol>
                   <CCol sm="12" md="6">
-                    <CLabel htmlFor="relieveStaff">Relieve Staff</CLabel>
-                    <CSelect custom name="relieveStaff" id="relieveStaff" onChange={onInputChange}>
-                      <option value="0">Select Employee</option>
-                      <option value="1">Staff 1</option>
-                      <option value="2">Staff 2</option>
+                    <CLabel htmlFor="relieve_staff">Relieve Staff</CLabel>
+                    <CSelect custom name="relieve_staff" id="relieve_staff" onChange={onInputChange}>
+                      <option value="">Select Employee</option>
+                      {users &&
+                        users.length &&
+                        users
+                          .filter(usr => usr.id !== user.staff_id)
+                          .map(usr => <option key={usr.staff_id} value={user.staff_id}>{`${usr.firstname} ${usr.lastname}`}</option>)}
                     </CSelect>
                   </CCol>
                 </CFormGroup>
@@ -135,14 +148,14 @@ const LeaveRequest = () => {
                   </CCol>
                 </CFormGroup>
               </CForm>
-              <div>Reporting Manager: {userState.line_manager}</div>
+              <div>Reporting Manager: {user.line_manager}</div>
             </CCardBody>
             <CCardFooter className="d-flex justify-content-between">
               <CButton type="submit" size="sm" color="primary" onClick={handleSubmit}>
                 <CIcon name="cil-scrubber" /> Submit
               </CButton>
-              <CButton type="reset" size="sm" color="danger">
-                <CIcon name="cil-ban" onClick={() => console.log("cancelled")} /> Cancel
+              <CButton type="reset" size="sm" color="danger" onClick={() => history.goBack()}>
+                <CIcon name="cil-ban" /> Cancel
               </CButton>
             </CCardFooter>
           </CCard>

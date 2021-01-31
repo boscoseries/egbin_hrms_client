@@ -3,39 +3,44 @@ import { useHistory, useLocation } from "react-router-dom";
 import { Card, Table, Container, Row } from "reactstrap";
 import Title from "../../title/Title";
 import { Link } from "react-router-dom";
-// import { useDispatch } from "react-redux";
-// import { HashLink } from "react-router-hash-link";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLeaves, fetchUser } from "../../../../redux/actions";
 import { TheHeaderDropdownTasks } from "../../../../containers";
 import swal from "@sweetalert/with-react";
+import { formatDistanceToNow } from "date-fns";
 
-const leaveRequests = [
-  {
-    staffId: 1,
-    name: "John Doe",
-    type: "Annual",
-    starts: "2020-10-31",
-    ends: "2020-10-31",
-    duration: "10",
-    relieveStaff: "Sodiq Ridwan",
-    status: "Pending"
-  },
-  {
-    staffId: 2,
-    name: "John Doe",
-    type: "Annual",
-    starts: "2020-10-31",
-    ends: "2020-10-31",
-    duration: "10",
-    relieveStaff: "Sodiq Ridwan",
-    status: "Pending"
-  }
-];
+// const leaveRequests = [
+//   {
+//     staffId: 1,
+//     name: "John Doe",
+//     type: "Annual",
+//     starts: "2020-10-31",
+//     ends: "2020-10-31",
+//     duration: "10",
+//     relieveStaff: "Sodiq Ridwan",
+//     status: "Pending"
+//   },
+//   {
+//     staffId: 2,
+//     name: "John Doe",
+//     type: "Annual",
+//     starts: "2020-10-31",
+//     ends: "2020-10-31",
+//     duration: "10",
+//     relieveStaff: "Sodiq Ridwan",
+//     status: "Pending"
+//   }
+// ];
 
-const LeaveRequests = () => {
-  // const dispatch = useDispatch();
+const LeaveHistory = () => {
+  const state = useSelector(state => state);
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  console.log(history);
+  const leaveRequests = state.leaves.leaves;
+
+  console.log(leaveRequests);
+
   const queryPage = useLocation().search.match(/page=([0-9]+)/, "");
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
   const [page, setPage] = useState(currentPage);
@@ -51,6 +56,7 @@ const LeaveRequests = () => {
   };
 
   useEffect(() => {
+    dispatch(fetchLeaves());
     currentPage !== page && setPage(currentPage);
   }, [currentPage, page]);
 
@@ -96,7 +102,10 @@ const LeaveRequests = () => {
       // }
     });
   };
+
   const handleDelete = () => {};
+
+  if (!leaveRequests) return null;
 
   return (
     <>
@@ -109,8 +118,7 @@ const LeaveRequests = () => {
                   <div
                     className="d-flex flex-column justify-content-center align-items-center text-dark"
                     style={{ height: "30vh", fontSize: "17px" }}>
-                    <p className="pb-0 mb-1 font-weight-bold">There are no competitions at the moment.</p>
-                    <p className="font-weight-bold"> Competitions will display here when they are available</p>
+                    <p className="pb-0 mb-1 font-weight-bold">TYou don't have any leave requests for now.</p>
                   </div>
                 </div>
               </div>
@@ -138,46 +146,47 @@ const LeaveRequests = () => {
 
                         <tbody>
                           {leaveRequests.map((entry, index) => {
-                            const { staffId, name, type, starts, ends, duration, relieveStaff, status } = entry;
+                            const {
+                              staff: { firstname, lastname, staff_id },
+                              type,
+                              leave_start,
+                              leave_end,
+                              duration,
+                              relieve_staff,
+                              status
+                            } = entry;
+                            console.log(relieve_staff);
                             return (
                               <tr key={index}>
                                 <th scope="row">
-                                  <Link to={`/employees/${staffId}`} style={{ color: "black" }}>
+                                  <Link to={`/employees/${staff_id}`} style={{ color: "black" }}>
                                     <div className="pl-3">
                                       <span className="mb-0 text-sm d-inline-block text-truncate" style={{ maxWidth: "150px" }}>
-                                        {staffId}
+                                        {staff_id}
                                       </span>
                                     </div>
                                   </Link>
                                 </th>
-                                <td>{name}</td>
+                                <td>{`${firstname}` + ` ${lastname}`}</td>
                                 <td>{type}</td>
                                 <td>
-                                  <div>{starts}</div>
+                                  <div>{new Date(leave_start).toDateString()}</div>
                                 </td>
                                 <td>
-                                  <div>{ends}</div>
+                                  <div>{new Date(leave_end).toDateString()}</div>
                                 </td>
                                 <td>
                                   <div>{duration}</div>
                                 </td>
                                 <td>
-                                  <div>{relieveStaff}</div>
+                                  <div>{`${relieve_staff.firstname}` + ` ${relieve_staff.lastname}`}</div>
                                 </td>
                                 <td>
                                   <div>{status}</div>
                                 </td>
                                 <td className="text-right">
                                   <span>
-                                    <TheHeaderDropdownTasks
-                                      // updateKey={"Update Record"}
-                                      // deleteKey={"Delete Record"}
-                                      detailsKey={"View Details"}
-                                      className={staffId}
-                                      // statusUpdate={handleStatusUpdate}
-                                      // handleDelete={handleDelete}
-                                      displayDetails={handleRequestDetails}
-                                    />
+                                    <TheHeaderDropdownTasks detailsKey={"View Details"} className={staff_id} displayDetails={handleRequestDetails} />
                                   </span>
                                 </td>
                               </tr>
@@ -197,4 +206,4 @@ const LeaveRequests = () => {
   );
 };
 
-export default LeaveRequests;
+export default LeaveHistory;

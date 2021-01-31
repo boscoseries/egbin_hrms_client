@@ -1,8 +1,10 @@
-import { LOGIN } from "../../types/employee";
+import { LOGIN, FETCH_USERS, FETCH_USER } from "../../types/employee";
 
 const initialState = {
   authenticated: false,
-  user: []
+  users: [],
+  loggedinUser: [],
+  user: {}
 };
 
 const employee = (state = initialState, action) => {
@@ -12,6 +14,17 @@ const employee = (state = initialState, action) => {
         ...state,
         authenticated: true,
         user: action.payload
+      };
+    case FETCH_USERS:
+      return {
+        ...state,
+        authenticated: true,
+        users: action.payload
+      };
+    case FETCH_USER:
+      return {
+        ...state,
+        users: action.payload
       };
     default:
       return state;

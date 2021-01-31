@@ -9,15 +9,21 @@ const TheHeaderDropdown = ({ statusUpdate, handleDelete, displayDetails, classNa
         <CIcon name="cil-list" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownItem onClick={statusUpdate}>
-          <strong className={className}>{updateKey}</strong>
-        </CDropdownItem>
-        <CDropdownItem onClick={handleDelete}>
-          <strong className={className}>{deleteKey}</strong>
-        </CDropdownItem>
-        <CDropdownItem onClick={displayDetails}>
-          <strong className={className}>{detailsKey}</strong>
-        </CDropdownItem>
+        {updateKey && (
+          <CDropdownItem onClick={statusUpdate}>
+            <strong className={className}>{updateKey}</strong>
+          </CDropdownItem>
+        )}
+        {deleteKey && (
+          <CDropdownItem onClick={handleDelete}>
+            <strong className={className}>{deleteKey}</strong>
+          </CDropdownItem>
+        )}
+        {detailsKey && (
+          <CDropdownItem onClick={displayDetails}>
+            <strong className={className}>{detailsKey}</strong>
+          </CDropdownItem>
+        )}
       </CDropdownMenu>
     </CDropdown>
   );

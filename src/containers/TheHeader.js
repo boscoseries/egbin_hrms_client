@@ -1,10 +1,10 @@
 import React, { useState, useLayoutEffect } from "react";
 import { useSelector } from "react-redux";
 import { CHeader, CHeaderNav, CHeaderNavItem, CHeaderNavLink, CSubheader } from "@coreui/react";
-import { TheHeaderDropdownMssg, TheHeaderDropdownNotif } from "./index";
+import { TheHeaderDropdownMssg, TheHeaderDropdownNotif, TheHeaderDropdownUser } from "./index";
 
 const TheHeader = () => {
-  const state = useSelector(state => state.users.user);
+  const state = useSelector(state => state.users.loggedinUser);
   const [userRole, setUserRole] = useState();
   const { role, firstname } = state;
 
@@ -46,9 +46,10 @@ const TheHeader = () => {
         )}
       </CHeaderNav>
 
-      <CHeaderNav className="px-3">
+      <CHeaderNav className="px-3 d-flex align-items-center justify-content-center">
         <TheHeaderDropdownNotif />
         <TheHeaderDropdownMssg />
+        <TheHeaderDropdownUser />
       </CHeaderNav>
     </CHeader>
   );

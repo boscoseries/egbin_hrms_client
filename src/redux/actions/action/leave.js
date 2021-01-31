@@ -25,22 +25,22 @@ export const createLeaveRequest = data => dispatch => {
     });
 };
 
-export const fetchLeave = () => dispatch => {
+export const fetchLeaves = () => dispatch => {
   return axios({
     method: "get",
     url: `${url}/api/v1/leave/`,
     headers: {
       "content-type": "application/json",
-      authorization: ""
+      authorization: token
     }
   })
     .then(response => {
       dispatch({
         type: FETCH_LEAVE,
-        payload: response.data
+        payload: response.data.results
       });
-      console.log(response.data);
-      return response.data;
+      // console.log(response.data.results);
+      return response.data.results;
     })
     .catch(err => {
       return err;

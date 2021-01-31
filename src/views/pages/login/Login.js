@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { login } from "../../../redux/actions";
 import { useAlert } from "react-alert";
+import { token } from "../../../redux/config";
+import { validate } from "../../../redux/config";
 import {
   CButton,
   CCard,
@@ -25,6 +27,10 @@ const Login = () => {
   const dispatch = useDispatch();
   const [userCreds, setUserCreds] = useState({});
 
+  if (token && token.split(" ")[1]) {
+    return history.push("/dashboard");
+  }
+
   const onInputChange = e => {
     const name = e.target.name;
     const value = e.target.value;
@@ -35,6 +41,7 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
+    console.log("loggedin");
     const data = await dispatch(login({ ...userCreds }));
     if (data.result) {
       return history.push("/dashboard");

@@ -7,4 +7,10 @@ if (process.env.NODE_ENV === "development") {
 }
 const token = `Bearer ${localStorage.getItem("key")}`;
 
-export { url, token };
+const validate = history => {
+  if (token && token.split(" ")[1]) {
+    return history.push("/");
+  }
+};
+
+export { url, token, validate };

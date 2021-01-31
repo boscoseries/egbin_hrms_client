@@ -1,12 +1,10 @@
 import { combineReducers } from "redux";
 import userReducer from "./reducers/employee";
-// import utilReducer from "./reducers/utils";
-// import alertReducer from "./reducers/alerts";
-// import postReducer from "./reducers/posts";
-// import interactionReducer from "./reducers/interactions";
+import leaveReducer from "./reducers/leave";
 
 const reducers = combineReducers({
-  users: userReducer
+  users: userReducer,
+  leaves: leaveReducer
 });
 
 export default reducers;
