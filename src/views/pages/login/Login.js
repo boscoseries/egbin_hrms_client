@@ -27,10 +27,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const [userCreds, setUserCreds] = useState({});
 
-  if (token && token.split(" ")[1]) {
-    return history.push("/dashboard");
-  }
-
   const onInputChange = e => {
     const name = e.target.name;
     const value = e.target.value;

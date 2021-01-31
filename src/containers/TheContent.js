@@ -13,8 +13,8 @@ const loading = (
 const TheContent = () => {
   const history = useHistory();
 
-  if (!token || !token.split(" ")[1]) {
-    history.push("/login");
+  if (!token || token.split(" ")[1].length < 400) {
+    return history.push("/login");
   }
 
   return (
