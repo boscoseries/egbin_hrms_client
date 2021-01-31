@@ -1,8 +1,6 @@
 import React, { Suspense } from "react";
-import { useHistory, Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { CContainer, CFade } from "@coreui/react";
-
-// routes config
 import routes from "../routes";
 
 const loading = (
@@ -12,15 +10,6 @@ const loading = (
 );
 
 const TheContent = () => {
-  const history = useHistory();
-  const auth = false;
-
-  if (auth === true) {
-    history.push("/login");
-  } else {
-    history.goForward();
-  }
-
   return (
     <main className="c-main">
       <CContainer fluid>
