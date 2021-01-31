@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import { CContainer, CFade } from "@coreui/react";
+import { token } from "../redux/config";
 import routes from "../routes";
 
 const loading = (
@@ -10,6 +11,12 @@ const loading = (
 );
 
 const TheContent = () => {
+  const history = useHistory();
+
+  if (!token || !token.split(" ")[1]) {
+    history.push("/login");
+  }
+
   return (
     <main className="c-main">
       <CContainer fluid>

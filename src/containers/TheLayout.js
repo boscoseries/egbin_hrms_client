@@ -9,7 +9,7 @@ const TheLayout = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  if (!token || token.split(" ")[0] != "Bearer") {
+  if (!token || !token.split(" ")[1]) {
     history.push("/login");
   }
   const userToken = token.split(" ")[1];

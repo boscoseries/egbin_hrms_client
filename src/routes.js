@@ -11,7 +11,7 @@ const EmployeeDetails = React.lazy(() => import("./views/pages/admin/UserDetails
 const EmployeeLeaveDetails = React.lazy(() => import("./views/pages/employee/LeaveRequestDetails"));
 
 const routes = [
-  { path: "/", exact: true, name: "Home" },
+  { path: "/", exact: true, name: "Home", component: Home },
   { path: "/admin/manage/:id", exact: true, name: "Leave Request Details", component: LeaveRequestDetails },
   { path: "/dashboard", exact: true, name: "Dashboard", component: Home },
   { path: "/admin/employees", exact: true, name: "Employees", component: Staff },
