@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
+import { useDispatch } from "react-redux";
+import { createLeaveRequest } from "../../../redux/actions";
+import { useSelector } from "react-redux";
+import { useAlert } from "react-alert";
 import {
   CButton,
   CCard,
@@ -16,9 +20,17 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
+const LeaveRequest = () => {
+  const alert = useAlert();
+  const dispatch = useDispatch();
+  const state = useSelector(state => state);
+  const userState = state.users.user;
+  const [availableDays, setavailableDays] = useState("");
+  const [formValues, setFormValues] = useState({});
 
-const AdminLeaveManagement = () => {
-  const [formValues, setFormValues] = useState({ reportingManager: "Daniel Ale" });
+  useLayoutEffect(() => {
+    setavailableDays(userState[formValues.leaveType]);
+  }, [formValues.leaveType]);
 
   const onInputChange = e => {
     const name = e.target.name;
@@ -30,8 +42,25 @@ const AdminLeaveManagement = () => {
   };
 
   const handleSubmit = () => {
-    console.log("submitted");
+    if (Object.keys(formValues).length < 6) {
+      return alert.show("Please complete all fields");
+    }
+    if (formValues.duration > availableDays) {
+      return alert.show("You can only take " + availableDays + " days");
+    }
+    if (formValues.duration >= 14) {
+      return alert.show("Please input a duration below 14 days");
+    }
+    const data = {
+      ...formValues,
+      leave_start: new Date(formValues.leave_start),
+      leave_end: new Date(formValues.leave_end),
+      resumption_date: new Date(formValues.resumption_date)
+    };
+    dispatch(createLeaveRequest(data));
   };
+
+
 
   return (
     <>
@@ -43,50 +72,51 @@ const AdminLeaveManagement = () => {
             </CCardHeader>
             <CCardBody>
               <CForm action="" method="post" encType="multipart/form-data" className="form-horizontal">
-                <CFormGroup row>
-                  <CCol md="3">
-                    <CLabel>Availabe Leave Days</CLabel>
-                  </CCol>
-                  <CCol xs="12" md="9">
-                    <p className="form-control-static">10</p>
-                  </CCol>
-                </CFormGroup>
+                {availableDays && (
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel>
+                        <strong>Availabe Days:</strong>
+                      </CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <p className="form-control-static">
+                        <strong>{availableDays}</strong>
+                      </p>
+                    </CCol>
+                  </CFormGroup>
+                )}
                 <CFormGroup row>
                   <CCol sm="12" md="6">
                     <CLabel htmlFor="leaveType">Leave Type</CLabel>
                     <CSelect custom name="leaveType" id="leaveType" onChange={onInputChange}>
-                      <option value="0">Select Leave Type</option>
-                      <option value="1">Annual Leave</option>
-                      <option value="2">Examination Leave</option>
-                      <option value="3">Maternity Leave</option>
-                      <option value="3">Sick Leave</option>
-                      <option value="3">Compensation Leave</option>
+                      <option value="">Select Leave Type</option>
+                      <option value="annual_leave">Annual Leave</option>
+                      <option value="exam_leave">Examination Leave</option>
+                      <option value="sick_leave">Sick Leave</option>
+                      <option value="compassionate_leave">Compassionate Leave</option>
                     </CSelect>
                   </CCol>
-                  <CCol sm="12" md="6">
-                    <CLabel htmlFor="leaveFor">Leave For</CLabel>
-                    <CSelect custom name="leaveFor" id="leaveFor" onChange={onInputChange}>
-                      <option value="0">Full Day</option>
-                      <option value="1">Half Day</option>
-                    </CSelect>
-                  </CCol>
-                </CFormGroup>
-
-                <CFormGroup row>
-                  <CCol sm="12" md="6">
-                    <CLabel htmlFor="startDate">From</CLabel>
-                    <CInput type="date" id="startDate" name="startDate" placeholder="date" onChange={onInputChange} />
-                  </CCol>
-                  <CCol sm="12" md="6">
-                    <CLabel htmlFor="endDate">To</CLabel>
-                    <CInput type="date" id="endDate" name="endDate" placeholder="date" onChange={onInputChange} />
-                  </CCol>
-                </CFormGroup>
-
-                <CFormGroup row>
                   <CCol md="6">
-                    <CLabel htmlFor="number-input">Days</CLabel>
-                    <CInput id="number-input" name="number-input" type="number" placeholder="Number of days" onChange={onInputChange} />
+                    <CLabel htmlFor="duration">Duration</CLabel>
+                    <CInput id="duration" name="duration" type="number" placeholder="Number of days" onChange={onInputChange} required />
+                  </CCol>
+                </CFormGroup>
+
+                <CFormGroup row>
+                  <CCol sm="12" md="6">
+                    <CLabel htmlFor="leave_start">Start</CLabel>
+                    <CInput type="date" id="leave_start" name="leave_start" placeholder="date" onChange={onInputChange} />
+                  </CCol>
+                  <CCol sm="12" md="6">
+                    <CLabel htmlFor="leave_end">End</CLabel>
+                    <CInput type="date" id="leave_end" name="leave_end" placeholder="date" onChange={onInputChange} />
+                  </CCol>
+                </CFormGroup>
+                <CFormGroup row>
+                  <CCol sm="12" md="6">
+                    <CLabel htmlFor="resumption_date">Resumption Date</CLabel>
+                    <CInput type="date" id="resumption_date" name="resumption_date" placeholder="date" onChange={onInputChange} />
                   </CCol>
                   <CCol sm="12" md="6">
                     <CLabel htmlFor="relieveStaff">Relieve Staff</CLabel>
@@ -97,14 +127,15 @@ const AdminLeaveManagement = () => {
                     </CSelect>
                   </CCol>
                 </CFormGroup>
+
                 <CFormGroup row>
                   <CCol sm="12">
-                    <CLabel htmlFor="textarea-input">Description</CLabel>
-                    <CTextarea name="textarea-input" id="textarea-input" rows="4" placeholder="Tell us why..." onChange={onInputChange} />
+                    <CLabel htmlFor="description">Description</CLabel>
+                    <CTextarea name="description" id="description" rows="4" placeholder="Tell us why..." onChange={onInputChange} />
                   </CCol>
                 </CFormGroup>
               </CForm>
-              <div>Reporting Manager: {"Daniel Ale"}</div>
+              <div>Reporting Manager: {userState.line_manager}</div>
             </CCardBody>
             <CCardFooter className="d-flex justify-content-between">
               <CButton type="submit" size="sm" color="primary" onClick={handleSubmit}>
@@ -121,4 +152,4 @@ const AdminLeaveManagement = () => {
   );
 };
 
-export default AdminLeaveManagement;
+export default LeaveRequest;

@@ -1,7 +1,8 @@
 import { LOGIN } from "../../types/employee";
 
 const initialState = {
-  authenticated: false
+  authenticated: false,
+  user: []
 };
 
 const employee = (state = initialState, action) => {
@@ -9,7 +10,8 @@ const employee = (state = initialState, action) => {
     case LOGIN:
       return {
         ...state,
-        authenticated: true
+        authenticated: true,
+        user: action.payload
       };
     default:
       return state;

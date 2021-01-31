@@ -1,5 +1,6 @@
 import { url, token } from "../../config";
 import { LOGIN } from "../../types/employee";
+import jwt_decode from "jwt-decode";
 const axios = require("axios");
 
 export const login = data => dispatch => {
@@ -22,4 +23,13 @@ export const login = data => dispatch => {
     .catch(err => {
       return err;
     });
+};
+
+export const decodeToken = (token_key) => dispatch => {
+  const decoded = jwt_decode(token_key);
+  dispatch({
+    type: LOGIN,
+    payload: decoded
+  });
+  return decoded;
 };

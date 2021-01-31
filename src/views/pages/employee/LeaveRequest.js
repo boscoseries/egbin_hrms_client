@@ -1,10 +1,10 @@
 import React from "react";
-import { LeaveRequestTable } from "../../../reusable";
+import LeaveRequestForm from "../../base/forms/LeaveRequest"
 
 const LeaveRequest = () => {
   return (
     <div>
-      <LeaveRequestTable />
+      <LeaveRequestForm />
     </div>
   );
 };
