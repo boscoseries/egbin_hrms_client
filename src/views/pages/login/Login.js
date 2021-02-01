@@ -38,7 +38,7 @@ const Login = () => {
     console.log("loggedin");
     const data = await dispatch(login({ ...userCreds }));
     if (data.result) {
-      return history.push("/dashboard");
+      return history.push("/");
     } else {
       alert.show("Id and passwod do not match!");
       return history.push("/login");
