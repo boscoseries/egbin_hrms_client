@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect } from "react";
 import { useDispatch } from "react-redux";
 import { createLeaveRequest } from "../../../redux/actions";
-import { fetchUsers } from "../../../redux/actions";
+import { fetchUsers, fetchUser } from "../../../redux/actions";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useAlert } from "react-alert";
@@ -27,15 +27,16 @@ const LeaveRequest = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
   const state = useSelector(state => state);
-  const user = state.users.user;
+  const { loggedinUser, user } = state.users;
   const users = state.users.users.results;
   const [availableDays, setavailableDays] = useState("");
   const [formValues, setFormValues] = useState({});
 
   useLayoutEffect(() => {
-    setavailableDays(user[formValues.leaveType]);
+    setavailableDays(loggedinUser[formValues.type]);
     dispatch(fetchUsers());
-  }, [formValues.leaveType]);
+    dispatch(fetchUser(loggedinUser.user_id));
+  }, [formValues.type]);
 
   const onInputChange = e => {
     const name = e.target.name;
@@ -131,8 +132,8 @@ const LeaveRequest = () => {
                       {users &&
                         users.length &&
                         users
-                          .filter(usr => usr.id !== user.staff_id)
-                          .map(usr => <option key={usr.staff_id} value={user.staff_id}>{`${usr.firstname} ${usr.lastname}`}</option>)}
+                          .filter(usr => usr.id !== loggedinUser.user_id)
+                          .map(usr => <option key={usr.staff_id} value={usr.id}>{`${usr.firstname} ${usr.lastname}`}</option>)}
                     </CSelect>
                   </CCol>
                 </CFormGroup>
@@ -144,7 +145,7 @@ const LeaveRequest = () => {
                   </CCol>
                 </CFormGroup>
               </CForm>
-              <div>Reporting Manager: {user.line_manager}</div>
+              <div>Reporting Manager: {user.id && user.line_manager.firstname + " " + user.line_manager.lastname}</div>
             </CCardBody>
             <CCardFooter className="d-flex justify-content-between">
               <CButton type="submit" size="sm" color="primary" onClick={handleSubmit}>

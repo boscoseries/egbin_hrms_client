@@ -18,11 +18,11 @@ const TheHeaderDropdown = ({ statusUpdate, handleDelete, displayDetails, classNa
         <CIcon name="cil-list" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        {((userRole === "ADMIN") || (userRole === "MANAGER")) && (
-            <CDropdownItem onClick={statusUpdate}>
-              <strong className={className}>{updateKey}</strong>
-            </CDropdownItem>
-          )}
+        {(userRole === "ADMIN" || userRole === "MANAGER") && (
+          <CDropdownItem onClick={statusUpdate}>
+            <strong className={className}>{updateKey}</strong>
+          </CDropdownItem>
+        )}
         {userRole === "ADMIN" && (
           <CDropdownItem onClick={handleDelete}>
             <strong className={className}>{deleteKey}</strong>

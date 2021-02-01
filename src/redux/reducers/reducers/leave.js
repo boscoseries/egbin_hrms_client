@@ -1,8 +1,9 @@
-import { CREATE_LEAVE, FETCH_LEAVE } from "../../types/leave";
+import { CREATE_LEAVE, FETCH_LEAVE, UPDATE_LEAVE_STATUS } from "../../types/leave";
 
 const initialState = {
   leave_created: false,
-  leaves: []
+  leaves: [],
+  leave_updated: ""
 };
 
 const employee = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const employee = (state = initialState, action) => {
       return {
         ...state,
         leaves: action.payload
+      };
+    case UPDATE_LEAVE_STATUS:
+      return {
+        ...state,
+        leave_updated: true
       };
     default:
       return state;

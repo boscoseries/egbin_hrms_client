@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Card, Table, Container, Row } from "reactstrap";
-import Title from "../../title/Title";
-import { Link } from "react-router-dom";
+import Title from "../../base/title/Title";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchLeaves, updateStatus } from "../../../../redux/actions";
-import { TheHeaderDropdownTasks } from "../../../../containers";
+import { fetchUsers, updateStatus } from "../../../redux/actions";
+import { TheHeaderDropdownTasks } from "../../../containers";
 import swal from "@sweetalert/with-react";
 
-const LeaveHistory = () => {
+const Employees = () => {
   const state = useSelector(state => state);
   const dispatch = useDispatch();
   const history = useHistory();
-  const leaveRequests = state.leaves.leaves;
-  const [value, setValue] = useState(false);
-
-  const queryPage = useLocation().search.match(/page=([0-9]+)/, "");
-  const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
-  const [page, setPage] = useState(currentPage);
+  const users = state.users.users.results;
 
   const handleRequestDetails = e => {
     e.preventDefault();
@@ -26,8 +20,7 @@ const LeaveHistory = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchLeaves());
-    currentPage !== page && setPage(currentPage);
+    dispatch(fetchUsers());
   }, []);
 
   const handleStatusUpdate = e => {
@@ -74,17 +67,19 @@ const LeaveHistory = () => {
     });
   };
 
+  console.log(users);
 
   const handleDelete = () => {};
 
-  if (!leaveRequests) return null;
+  if (!users) return null;
 
   return (
     <>
+      <h2>Manage Employees</h2>
       <div>
         <div className="pb-5 pt-5 pt-md-8">
           <Container fluid style={{ width: "97%" }}>
-            {!leaveRequests && (
+            {!users && (
               <div style={{ height: "70vh" }}>
                 <div className="bg-white">
                   <div
@@ -95,7 +90,7 @@ const LeaveHistory = () => {
                 </div>
               </div>
             )}
-            {leaveRequests.length > 0 && (
+            {users.length > 0 && (
               <>
                 <Title titleClass="title text-white" title="Leave Requests" />
                 <Row>
@@ -104,58 +99,66 @@ const LeaveHistory = () => {
                       <Table className="align-items-center table-flush" responsive>
                         <thead className="thead-light">
                           <tr>
-                            <th scope="col">Staff ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Starts</th>
-                            <th scope="col">Ends</th>
-                            <th scope="col">Duration</th>
-                            <th scope="col">Relieve Staff</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Staff Id</th>
+                            <th scope="col">Firstname</th>
+                            <th scope="col">Lastname</th>
+                            <th scope="col">Middlename</th>
+                            <th scope="col">Annual Leave</th>
+                            <th scope="col">Sick Leave</th>
+                            <th scope="col">Exam Leave</th>
+                            <th scope="col">Compass. Leave</th>
+                            <th scope="col">Line Manager</th>
+                            <th scope="col">Role</th>
                             <th scope="col" />
                           </tr>
                         </thead>
 
                         <tbody>
-                          {leaveRequests.map((entry, index) => {
+                          {users.map((entry, index) => {
                             const {
                               id,
-                              staff: { firstname, lastname, staff_id },
-                              type,
-                              leave_start,
-                              leave_end,
-                              duration,
+                              firstname,
+                              lastname,
+                              middlename,
+                              staff_id,
+                              annual_leave,
+                              sick_leave,
+                              exam_leave,
                               relieve_staff,
-                              status
+                              compassionate_leave,
+                              role,
+                              line_manager
                             } = entry;
                             console.log(relieve_staff);
                             return (
                               <tr key={index}>
-                                <th scope="row">
-                                  <Link to={`/employees/${staff_id}`} style={{ color: "black" }}>
-                                    <div className="pl-3">
-                                      <span className="mb-0 text-sm d-inline-block text-truncate" style={{ maxWidth: "150px" }}>
-                                        {staff_id}
-                                      </span>
-                                    </div>
-                                  </Link>
-                                </th>
-                                <td>{`${firstname}` + ` ${lastname}`}</td>
-                                <td>{type}</td>
                                 <td>
-                                  <div>{new Date(leave_start).toDateString()}</div>
+                                  <strong>{staff_id}</strong>
+                                </td>
+                                <td>{firstname}</td>
+                                <td>
+                                  <div>{lastname}</div>
                                 </td>
                                 <td>
-                                  <div>{new Date(leave_end).toDateString()}</div>
+                                  <div>{middlename}</div>
                                 </td>
                                 <td>
-                                  <div>{duration}</div>
+                                  <div>{annual_leave}</div>
                                 </td>
                                 <td>
-                                  <div>{`${relieve_staff.firstname}` + ` ${relieve_staff.lastname}`}</div>
+                                  <div>{exam_leave}</div>
                                 </td>
                                 <td>
-                                  <div>{status}</div>
+                                  <div>{sick_leave}</div>
+                                </td>
+                                <td>
+                                  <div>{compassionate_leave}</div>
+                                </td>
+                                <td>
+                                  <div>{`${line_manager.firstname} ${line_manager.lastname}`}</div>
+                                </td>
+                                <td>
+                                  <div>{role}</div>
                                 </td>
                                 <td className="text-right">
                                   <span>
@@ -187,4 +190,4 @@ const LeaveHistory = () => {
   );
 };
 
-export default LeaveHistory;
+export default Employees;

@@ -3,8 +3,6 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { login } from "../../../redux/actions";
 import { useAlert } from "react-alert";
-import { token } from "../../../redux/config";
-import { validate } from "../../../redux/config";
 import {
   CButton,
   CCard,

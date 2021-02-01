@@ -6,11 +6,13 @@ import { TheHeaderDropdownMssg, TheHeaderDropdownNotif, TheHeaderDropdownUser } 
 const TheHeader = () => {
   const state = useSelector(state => state.users.loggedinUser);
   const { role, firstname } = state;
-  const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState(role);
 
-  useLayoutEffect(() => {
-    setUserRole(role);
-  }, []);
+  useLayoutEffect
+    (() => {
+      setUserRole(() => role);
+    },
+    [role]);
 
   return (
     <CHeader withSubheader>
@@ -41,12 +43,12 @@ const TheHeader = () => {
             </CHeaderNavItem>
           </>
         )}
-        {userRole === "ADMIN" ||
-          (userRole === "MANAGER" && (
+        {((userRole === "ADMIN") ||
+          (userRole === "MANAGER")) && (
             <CHeaderNavItem className="px-3">
               <CHeaderNavLink to="/admin/manage">Manage Leave Requests</CHeaderNavLink>
             </CHeaderNavItem>
-          ))}
+          )}
       </CHeaderNav>
 
       <CHeaderNav className="px-3 d-flex align-items-center justify-content-center">

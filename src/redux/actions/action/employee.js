@@ -1,5 +1,5 @@
 import { url, token } from "../../config";
-import { LOGIN, FETCH_USERS, FETCH_USER } from "../../types/employee";
+import { LOGIN, FETCH_USERS, FETCH_USER, CREATE_USER } from "../../types/employee";
 import jwt_decode from "jwt-decode";
 const axios = require("axios");
 
@@ -55,7 +55,7 @@ export const fetchUsers = () => dispatch => {
     });
 };
 
-export const fetchUser = (id) => dispatch => {
+export const fetchUser = id => dispatch => {
   return axios({
     method: "get",
     url: `${url}/api/v1/employees/${id}`,
@@ -67,6 +67,27 @@ export const fetchUser = (id) => dispatch => {
     .then(response => {
       dispatch({
         type: FETCH_USER,
+        payload: response.data
+      });
+      return response.data;
+    })
+    .catch(err => {
+      return err;
+    });
+};
+
+export const createUser = data => dispatch => {
+  return axios({
+    method: "post",
+    url: `${url}/api/v1/employees/`,
+    data: data,
+    headers: {
+      "content-type": "application/json"
+    }
+  })
+    .then(response => {
+      dispatch({
+        type: CREATE_USER,
         payload: response.data
       });
       return response.data;
