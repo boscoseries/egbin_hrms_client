@@ -1,10 +1,10 @@
 import React from "react";
-import AdminLeaveRequests from "../../base/tables/adminLeaveRequest/LeaveRequest";
+import LeaveRequestForm from "../../base/forms/LeaveRequest"
 
 const LeaveRequests = props => {
   return (
     <div>
-      <AdminLeaveRequests />
+      <LeaveRequestForm />
     </div>
   );
 };

@@ -1,13 +1,13 @@
 import React from "react";
-import StaffLeaveHistory from "../../base/tables/users/Staff";
+import LeaveHistory from "../../base/tables/users/Staff";
 
-const EmployeeLeaveHistory = () => {
+const StaffLeaveHistory = () => {
   return (
     <div>
       <h2>Leave History</h2>
-      <StaffLeaveHistory />
+      <LeaveHistory />
     </div>
   );
 };
 
-export default EmployeeLeaveHistory;
+export default StaffLeaveHistory;

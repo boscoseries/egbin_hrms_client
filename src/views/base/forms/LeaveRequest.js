@@ -46,10 +46,6 @@ const LeaveRequest = () => {
     });
   };
 
-  // console.log(user);
-  console.log(formValues);
-  // console.log(users);
-
   const handleSubmit = async () => {
     if (Object.keys(formValues).length < 6) {
       return alert.show("Please complete all fields");

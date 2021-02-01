@@ -13,18 +13,17 @@ const employee = (state = initialState, action) => {
       return {
         ...state,
         authenticated: true,
-        user: action.payload
+        loggedinUser: action.payload
       };
     case FETCH_USERS:
       return {
         ...state,
-        authenticated: true,
         users: action.payload
       };
     case FETCH_USER:
       return {
         ...state,
-        users: action.payload
+        user: action.payload
       };
     default:
       return state;

@@ -7,39 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLeaves, fetchUser } from "../../../../redux/actions";
 import { TheHeaderDropdownTasks } from "../../../../containers";
 import swal from "@sweetalert/with-react";
-import { formatDistanceToNow } from "date-fns";
-
-// const leaveRequests = [
-//   {
-//     staffId: 1,
-//     name: "John Doe",
-//     type: "Annual",
-//     starts: "2020-10-31",
-//     ends: "2020-10-31",
-//     duration: "10",
-//     relieveStaff: "Sodiq Ridwan",
-//     status: "Pending"
-//   },
-//   {
-//     staffId: 2,
-//     name: "John Doe",
-//     type: "Annual",
-//     starts: "2020-10-31",
-//     ends: "2020-10-31",
-//     duration: "10",
-//     relieveStaff: "Sodiq Ridwan",
-//     status: "Pending"
-//   }
-// ];
 
 const LeaveHistory = () => {
   const state = useSelector(state => state);
   const dispatch = useDispatch();
   const history = useHistory();
-
   const leaveRequests = state.leaves.leaves;
-
-  console.log(leaveRequests);
 
   const queryPage = useLocation().search.match(/page=([0-9]+)/, "");
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
@@ -118,7 +91,7 @@ const LeaveHistory = () => {
                   <div
                     className="d-flex flex-column justify-content-center align-items-center text-dark"
                     style={{ height: "30vh", fontSize: "17px" }}>
-                    <p className="pb-0 mb-1 font-weight-bold">TYou don't have any leave requests for now.</p>
+                    <p className="pb-0 mb-1 font-weight-bold">You don't have any leave requests for now.</p>
                   </div>
                 </div>
               </div>
@@ -186,7 +159,15 @@ const LeaveHistory = () => {
                                 </td>
                                 <td className="text-right">
                                   <span>
-                                    <TheHeaderDropdownTasks detailsKey={"View Details"} className={staff_id} displayDetails={handleRequestDetails} />
+                                    <TheHeaderDropdownTasks
+                                      detailsKey={"View Details"}
+                                      className={staff_id}
+                                      displayDetails={handleRequestDetails}
+                                      handleDelete={handleDelete}
+                                      deleteKey={"Delete Request"}
+                                      updateKey={"Update Status"}
+                                      statusUpdate={handleStatusUpdate}
+                                    />
                                   </span>
                                 </td>
                               </tr>
