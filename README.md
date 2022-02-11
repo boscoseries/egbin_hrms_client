@@ -17,3 +17,6 @@ Dependencies are handled by **npm**.
 ## See also
 [Create-React-App](CRA.md)
 [Readme](./README.md)
+
+## CLIENT URL 
+- https://boscoseries.github.io/egbin_hrms_client/
